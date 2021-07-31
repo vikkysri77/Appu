@@ -35,18 +35,35 @@ public class HtmlToText  extends HTMLEditorKit.ParserCallback {
 
 	 public static void main (String[] args) {
 	   try {
-	     FileReader in = new FileReader(fp + "/src/files/" +"#.html");
+		   
+		   String[] pathnames;
+		   File f = new File(fp + "/src/files/");
+		   pathnames = f.list();
+		   
+		   
+		   for (String pathname : pathnames) {
+			   System.out.print(pathname.toString() + " | ");
+	
+			   FileReader in = new FileReader(fp + "/src/files/" + pathname.toString());
+		  
 	     HtmlToText parser = new HtmlToText();
 	     parser.parse(in);
 	     in.close();
 	     String textHTML = parser.getText();
-	     System.out.println(textHTML);
+//	     System.out.println(textHTML);
 	     
 	     // Write the text to a file  
-	     BufferedWriter writerTxt = new BufferedWriter(new FileWriter("testHtml.txt"));
+	     
+	     File theDir = new File(fp+"/src/processedText");
+	     if (!theDir.exists()){
+	         theDir.mkdirs();
+	     }
+	     
+	     BufferedWriter writerTxt = new BufferedWriter(new FileWriter(fp +"/src/processedText/"+ pathname + ".txt"));
 	     writerTxt.write(textHTML);
 	     writerTxt.close();
 
+		   }
 	   }
 	   catch (Exception e) {
 	     e.printStackTrace();

@@ -26,6 +26,7 @@ public class Crawl {
     private Path currentRelativePath = Paths.get("");
     private String fp = currentRelativePath.toAbsolutePath().toString();
     
+    
 
     
     List<String> link = new ArrayList<String>();
@@ -35,6 +36,11 @@ public class Crawl {
     }
 
     public void getPageLinks(String URL, int depth) throws Exception {
+    	 
+	     File theDir1 = new File(fp+"/src/files");
+	     if (!theDir1.exists()){
+	         theDir1.mkdirs();
+	     }
         if ((!links.contains(URL) && (depth < MAX_DEPTH))) {
             System.out.println(+ depth + " [" + URL + "]");
             
