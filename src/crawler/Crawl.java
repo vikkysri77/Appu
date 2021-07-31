@@ -5,11 +5,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -23,8 +27,8 @@ import java.util.List;
 public class Crawl {
     private static final int MAX_DEPTH = 2;
     private HashSet<String> links;
-    private Path currentRelativePath = Paths.get("");
-    private String fp = currentRelativePath.toAbsolutePath().toString();
+    private static Path currentRelativePath = Paths.get("");
+    private static String fp = currentRelativePath.toAbsolutePath().toString();
     
     
 
@@ -62,12 +66,11 @@ public class Crawl {
             }
             for (String s : link) {
             	download(URL, fp+"/src/files", s);
+            	saveURLs(s);
             }
             
         }
-        
 
-        
         }
 
     public static void main(String[] args) throws Exception {
@@ -75,13 +78,29 @@ public class Crawl {
         
     }
     
+    public static void saveURLs(String s) throws IOException {
+    	
+    	FileWriter fw = new FileWriter(fp+"/src/crawler/savedURL.txt", true);
+    	BufferedWriter bw = new BufferedWriter(fw);
+    	PrintWriter pw = new PrintWriter(bw);
+    	
+        
+    	pw.println(s+"\n");
+    	bw.close();
+    	fw.close();
+    	pw.close();
+    	
+	
+    }
+    
+    
     public static void download(String urlPath , String targetDirectory,String name) throws Exception {
 			     
 			System.out.println("url:"+ urlPath);
 			URL url = new URL(urlPath);
 			HttpURLConnection http = (HttpURLConnection)url.openConnection();
 			http.setConnectTimeout(3000);
-			        // Set User-Agent to avoid being intercepted
+			 
 			http.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
 			String contentType = http.getContentType();
 			System.out.println("contentType: "+ contentType);
@@ -118,7 +137,7 @@ public class Crawl {
                          System.out.println("The file name is: "+ fileName);
         }
         if(null == fileName) {
-                         // Try to get the file name from the url
+                   
             String[] arr  = urlPath.split("/");
             fileName = arr[arr.length - 1];
                          System.out.println("Get file name in url:"+ fileName);

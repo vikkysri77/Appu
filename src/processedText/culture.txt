@@ -1,2 +1,0 @@
-http://www.bbc.com/culture
-301 Moved Permanently301 Moved Permanentlynginx
