@@ -2,3 +2,4 @@
 bin/files/
 *.class
 
+/bin/

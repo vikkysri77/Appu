@@ -49,17 +49,18 @@ public class HtmlToText  extends HTMLEditorKit.ParserCallback {
 	     HtmlToText parser = new HtmlToText();
 	     parser.parse(in);
 	     in.close();
-	     String textHTML = parser.getText();
-//	     System.out.println(textHTML);
 	     
-	     // Write the text to a file  
+	     String[] splitString = pathname.split(".html");
+	     
+	     String textHTML = "http://www.bbc.com/"+splitString[0]+"\n"+parser.getText();
+
 	     
 	     File theDir = new File(fp+"/src/processedText");
 	     if (!theDir.exists()){
 	         theDir.mkdirs();
 	     }
 	     
-	     BufferedWriter writerTxt = new BufferedWriter(new FileWriter(fp +"/src/processedText/"+ pathname + ".txt"));
+	     BufferedWriter writerTxt = new BufferedWriter(new FileWriter(fp +"/src/processedText/"+ splitString[0] + ".txt"));
 	     writerTxt.write(textHTML);
 	     writerTxt.close();
 
