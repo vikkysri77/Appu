@@ -1,101 +1,93 @@
 package crawler;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Trie {
 
-	public class TrieNode {
-		Map<Character, TrieNode> children;
-		char c;
-		boolean isWord;
 
-		public TrieNode(char c) {
-			this.c = c;
-			children = new HashMap<>();
-		}
+	TrieNode root = new TrieNode();
 
-		public TrieNode() {
-			children = new HashMap<>();
-		}
+	public void addWord(String sWord)
 
-		public void insert(String word) {
-			if (word == null || word.isEmpty())
-				return;
-			char firstChar = word.charAt(0);
-			TrieNode child = children.get(firstChar);
-			if (child == null) {
-				child = new TrieNode(firstChar);
-				children.put(firstChar, child);
-			}
+	{
 
-			if (word.length() > 1)
-				child.insert(word.substring(1));
-			else
-				child.isWord = true;
-		}
+	 TrieNode temp = root;
 
-	}
+	 
 
-	TrieNode root;
+	 sWord = sWord.toLowerCase();
 
-	public Trie(List<String> words) {
-		root = new TrieNode();
-		for (String word : words)
-			root.insert(word);
+	 
 
-	}
+	for (int i = 0; i < sWord.length(); i++)
 
-	public boolean find(String prefix, boolean exact) {
-		TrieNode lastNode = root;
-		for (char c : prefix.toCharArray()) {
-			lastNode = lastNode.children.get(c);
-			if (lastNode == null)
-				return false;
-		}
-		return !exact || lastNode.isWord;
-	}
+	    {
 
-	public boolean find(String prefix) {
-		return find(prefix, false);
-	}
+	int index = sWord.charAt(i) - 'a';
 
-	public void suggestHelper(TrieNode root, List<String> list, StringBuffer curr) {
-		if (root.isWord) {
-			list.add(curr.toString());
-		}
+	 if (temp.children[index] == null)
 
-		if (root.children == null || root.children.isEmpty())
-			return;
+	 temp.children[index] = new TrieNode();
 
-		for (TrieNode child : root.children.values()) {
-			suggestHelper(child, list, curr.append(child.c));
-			curr.setLength(curr.length() - 1);
-		}
-	}
+	   
 
-	public List<String> suggest(String prefix) {
-		List<String> list = new ArrayList<>();
-		TrieNode lastNode = root;
-		StringBuffer curr = new StringBuffer();
-		for (char c : prefix.toCharArray()) {
-			lastNode = lastNode.children.get(c);
-			if (lastNode == null)
-				return list;
-			curr.append(c);
-		}
-		suggestHelper(lastNode, list, curr);
-		return list;
-	}
+	 temp = temp.children[index];
 
+	 
 
-	public static void main(String[] args) {
-		List<String> words = Arrays.asList("hello", "dog", "hell", "cat", "a", "hel","help","helps","helping");
-		Trie trie = new Trie(words);
+	    }
 	
-		System.out.println(trie.suggest("he"));
+	
+	
+	temp.isEnd = true;
+
+	 
+
 	}
+
+	 
+
+	 public TrieNode search(String sWord)
+
+	{
+
+	 TrieNode temp = root;
+
+	    for (int i = 0; i < sWord.length(); i++)
+
+	    {
+
+	    int index = sWord.charAt(i) - 'a';
+
+	    
+
+	        if (temp.children[index] == null)
+
+	        return null;
+
+	         temp = temp.children[index];
+
+	    }
+
+	    if( temp != null && temp.isEnd)
+
+	    return temp;
+
+	     
+
+	 return null;
+
+	}
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
